@@ -5,9 +5,8 @@ It includes the core diffusion process, a U-Net architecture for noise predictio
 
 &#x20; &#x20;
 
-<video src="ddpm_sampling_video.mp4" width="600" controls>
-  Your browser does not support the video tag.
-</video>
+[![Demo Video](images/image.png)](https://drive.google.com/file/d/1dENSu-7pEVqGHPY53-1kL2dkODRqT4YF/view?usp=drive_link)
+
 
 ---
 
