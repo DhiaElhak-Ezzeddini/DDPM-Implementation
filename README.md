@@ -5,6 +5,10 @@ It includes the core diffusion process, a U-Net architecture for noise predictio
 
 &#x20; &#x20;
 
+<video src="/ddpm_sampling_video.mp4" width="600" controls>
+  Your browser does not support the video tag.
+</video>
+
 ---
 
 ##  Table of Contents
@@ -61,24 +65,24 @@ This implementation includes:
 
 ### Key Files
 
-- ``
-
+- MNIST_Dataset.py
   - Handles loading & preprocessing for MNIST, FashionMNIST, CelebA.
   - Applies:
     - Resizing
     - Normalization to `[-1, 1]`
     - Padding for 28x28 images
 
-- ``
-
-  - Contains `DiffusionModel` (a PyTorch Lightning module).
+- Noise_Generation.py
+  - Contains `Diffusion Process`.
   - Implements:
     - β, α, and ᾱ schedule computation
+    - Adding noise to the image according to a given timestep
+- Train.py
     - Training loss (Algorithm 1 from the paper)
     - Sampling procedure (Algorithm 2)
     - U-Net wrapper & forward pass
 
-- ``
+- Unet.py
 
   - All building blocks for U-Net:
     - Residual blocks with timestep conditioning
@@ -90,7 +94,7 @@ This implementation includes:
 
 ##  Dataset Handling
 
-The `Diffset` class unifies data handling across datasets:
+The `MNIST_DataSet` class unifies data handling across datasets:
 
 | Dataset          | Size     | Notes                      |
 | ---------------- | -------- | -------------------------- |
@@ -98,7 +102,7 @@ The `Diffset` class unifies data handling across datasets:
 | **FashionMNIST** | 28×28    | Padded to 32×32, grayscale |
 | **CelebA**       | Variable | Resized and normalized     |
 
-All datasets are normalized to `[-1, 1]` to match DDPM requirements.
+All datasets are normalized to `[-1, 1]` to match DDPM requirements.(we worked only with MNIST Dataset)
 
 ---
 
@@ -113,7 +117,7 @@ Follows **Algorithm 1** in the DDPM paper:
 
 ### Key Parameters:
 
-- **Timesteps (**``**)**: 1000
+- **Timesteps (**t**)**: 1000
 - **β schedule**: Linear from `1e-4` to `0.02`
 - **Optimizer**: Adam, LR = `2e-4`
 
@@ -138,45 +142,16 @@ Conditioned on **timestep embeddings** at each step.
 
 - Python 3.x
 - `torch >= 2.1.0`
-- `pytorch-lightning >= 2.5.1`
 - `torchvision`
-- `einops`
+- `OpenCV`
 - Other: `numpy`, etc.
 
 ### Install:
 
 ```bash
-pip install pytorch_lightning torch torchvision einops
+pip install torch torchvision opencv-python
 ```
 
----
-
-## ▶ Usage
-
-### Training:
-
-```python
-from dataset import Diffset
-from model import DiffusionModel
-import pytorch_lightning as pl
-
-# Initialize dataset
-dataset = Diffset(train=True, d_name="MNIST")
-
-# Initialize model
-model = DiffusionModel(in_size=32*32, t_range=1000, img_depth=1)
-
-# Train with PyTorch Lightning
-trainer = pl.Trainer()
-trainer.fit(model, dataloader)
-```
-
-### Sampling:
-
-```python
-# Generate 16 sample images
-samples = model.sample(n_samples=16)
-```
 
 ---
 
@@ -204,7 +179,7 @@ samples = model.sample(n_samples=16)
 - Support **DDIM sampling** for faster inference
 - Add **classifier guidance** for conditional generation
 - Enable **high-resolution** training
-- Support **mixed precision** with AMP
+
 - Incorporate **advanced U-Net variants** with deeper attention
 
 ---
