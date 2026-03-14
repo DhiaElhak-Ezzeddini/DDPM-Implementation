@@ -120,6 +120,20 @@ Follows **Algorithm 1** in the DDPM paper:
 - **β schedule**: Linear from `1e-4` to `0.02`
 - **Optimizer**: Adam, LR = `2e-4`
 
+### Model Training Results
+
+##### Loss Curve
+The model was trained for 30 epochs with the following loss progression:
+
+![Training Loss Plot](/images/training_loss.png)
+
+*Training loss decreased from 0.0986 to 0.0225 over 30 epochs*
+
+#### Key Observations
+- Sharp initial drop in loss (epochs 1-2)
+- Steady convergence after epoch 5
+- Final loss: 0.0225
+
 ---
 
 ##  Inference
